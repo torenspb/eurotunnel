@@ -9,8 +9,8 @@ resource "aws_security_group" "allow_ssh_https_ike_esp" {
   description = "Allows ingress SSH, HTTPS, IKE, ESP connections to the default ports"
 
   ingress {
-    from_port   = 22
-    to_port     = 22
+    from_port   = "${var.SSH_PORT}"
+    to_port     = "${var.SSH_PORT}"
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -53,6 +53,12 @@ resource "aws_instance" "eurotunnel" {
   ami           = "${var.EC2["ami"]}"
   instance_type = "${var.EC2["type"]}"
   key_name      = "${aws_key_pair.bootkey.key_name}"
+  user_data     = <<-EOF
+                  #!/bin/bash -ex
+                  sudo semanage port -a -t ssh_port_t -p tcp ${var.SSH_PORT}
+                  sudo sed -i -e 's/#Port 22/Port ${var.SSH_PORT}/g' /etc/ssh/sshd_config
+                  sudo systemctl restart sshd
+                  EOF
 
   root_block_device {
     delete_on_termination = true
@@ -66,6 +72,7 @@ resource "aws_instance" "eurotunnel" {
     host        = self.public_ip
     user        = "${var.INSTANCE_USERNAME}"
     private_key = "${file("${aws_key_pair.bootkey.key_name}")}"
+    port        = "${var.SSH_PORT}"
   }
 
   provisioner "file" {

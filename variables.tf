@@ -21,6 +21,12 @@ variable "INSTANCE_USERNAME" {
   default = "centos"
 }
 
+# Default SSH port can be overridden in here
+# For the security reasons it's better to use port different than default one
+variable "SSH_PORT" {
+  default = "22"
+}
+
 # SSH key used to connect to an instance
 variable "SSH_KEY" {
   type = "map"
