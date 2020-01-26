@@ -5,7 +5,7 @@ Official Docker image is used to run Telegram Messenger MTProto proxy.
 Default IPsec configuration within this script is suitable for two cases:
 - site-to-site VPN
 - remote access VPN  
-![Alt text](images/scheme.png?raw=true "Deployed scheme")
+![Alt text](../images/scheme.png?raw=true "Deployed scheme")
 ## Usage
 ### Prerequisites
 Make sure Terraform version 0.12 or higher is installed.  
