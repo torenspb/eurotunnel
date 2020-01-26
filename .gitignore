@@ -1,5 +1,7 @@
 terraform.tfvars
 terraform.tfstate*
+variables.local.json
 .terraform/*
 *key
 *key.pub
+*.txt

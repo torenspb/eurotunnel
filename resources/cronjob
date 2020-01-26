@@ -1,0 +1,1 @@
+*/1 * * * * ping {{ provisioner.tunnel.remote_ip }} -c 1 > /dev/null

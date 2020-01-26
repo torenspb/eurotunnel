@@ -1,0 +1,66 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+
+    - name: Disable SELinux
+      selinux:
+        state: disabled
+
+    - name: Enable IP forwarding
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: yes
+        state: present
+        reload: yes
+
+    - name: Update all packages
+      yum:
+        name: '*'
+        state: latest
+        update_cache: yes
+
+    - name: Install EPEL repository
+      yum:
+        name: epel-release
+        state: latest
+
+    - name: Install additional packages
+      yum:
+        name: "{{ provisioner.packages }}"
+        state: latest
+
+    - name: Create and configure GRE tunnel
+      shell: |
+        ip tunnel add {{ provisioner.tunnel.name }} local any remote {{ provisioner.tunnel.peer_wan }}
+        ip tunnel change {{ provisioner.tunnel.name }} ttl 64
+        ip link set {{ provisioner.tunnel.name }} mtu {{ provisioner.tunnel.mtu }}
+        ip link set {{ provisioner.tunnel.name }} up
+        ip address add {{ provisioner.tunnel.local_ip }} dev {{ provisioner.tunnel.name }}
+        ip route add {{ provisioner.tunnel.peer_lan }} via {{ provisioner.tunnel.remote_ip }} dev {{ provisioner.tunnel.name }}
+
+    - name:  template everything for fooserv
+      template: src={{item.src}} dest={{item.dest}}
+      with_items:
+          - { src: 'resources/cronjob', dest: 'cronjob' }
+          - { src: 'resources/swanctl.conf', dest: '/etc/strongswan/swanctl/swanctl.conf' }
+
+    - name: Apply CRON job
+      shell: crontab cronjob
+
+    - name: Apply iptables rules
+      shell: |
+        iptables -t nat -A POSTROUTING -j MASQUERADE
+        iptables -t mangle -A FORWARD -m policy --pol ipsec --dir in -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360
+        iptables -t mangle -A FORWARD -m policy --pol ipsec --dir out -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360
+
+    - name: Enable and start services
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items: "{{ provisioner.services }}"
+
+    - name: Start Telegram proxy docker container
+      shell: docker run -d -p{{ connections.tgproxy_port }}:{{ connections.tgproxy_port }} --name=mtproto-proxy --restart=always -v proxy-config:/data -e SECRET={{ provisioner.telegram.secret }} telegrammessenger/proxy:latest

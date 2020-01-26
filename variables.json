@@ -1,0 +1,48 @@
+{
+    "instance": {
+        "region" : "eu-north-1",
+        "ami": "ami-5ee66f20",
+        "type": "t3.micro"
+    },
+    "connections": {
+        "username": "centos",
+        "ssh_port": 37676,
+        "ssh_key_name": "centoskey",
+        "ssh_pub_key": "centoskey.pub",
+        "ike_ports": [500, 4500],
+        "tgproxy_port": 443
+    },
+    "route53": {
+        "enabled": "false",
+        "domain": "mydomain.com",
+        "zone_id": "ZMY85FBM5IA47"
+    },
+    "provisioner": {
+        "packages": [
+            "strongswan",
+            "docker"
+            ],
+        "services": [
+            "docker",
+            "strongswan-swanctl"
+            ],
+        "tunnel": {
+            "name": "gre-tunnel0",
+            "local_ip": "10.10.10.1/30",
+            "remote_ip": "10.10.10.2",
+            "mtu": "1418",
+            "peer_wan": "1.2.3.4",
+            "peer_lan": "192.168.1.0/24"
+        },
+        "ipsec": {
+            "shared_key": "qwerty",
+            "user": "android",
+            "psk": "qwerty",
+            "pool_addr": "10.10.20.0/24",
+            "pool_dns": "8.8.8.8, 8.8.4.4"
+        },
+        "telegram": {
+            "secret": "qwerty"
+        }
+    }
+}
