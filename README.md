@@ -1,9 +1,10 @@
 # Eurotunnel
 > Creating personal VPN service has never been so easy. (c) said no one so far  
+
 Seriously though, using this Terraform project you'll be able to easily create your own ready-to-use IPsec VPN along with Telegram MTProto proxy.  
 Combining Terraform and Ansible it automatically deploys and provisions AWS EC2 instance with all VPN-needed services:
 * IPsec VPN based on strongSwan
-* official Docker image used to run Telegram Messenger MTProto proxy
+* official Docker image used to run Telegram Messenger MTProto proxy  
 Default IPsec configuration within this script is suitable for two cases:
 - site-to-site VPN
 - remote access VPN  
