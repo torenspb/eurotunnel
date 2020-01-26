@@ -1,11 +1,8 @@
-<aside class="warning">
-It is a very first version of the project that uses Terraform "remote-exec" provisioner to bootstrap software to the deployed instance.
-Despite of the fact that it works perfect, using Terraform for instance provisioning is recommended only as a last resort option.
-Using third-parties provisioner (configuration management systems) gives us more flexibility in configuration and that is what exactly Terraform recommends to do.
-Please use the latest version of the project (that is using Terraform + Ansible integration) located within the main project directory.
-</aside>
-
-Even if your specific use-case is not described in the following sections, we still recommend attempting to solve it using other techniques first, and use provisioners only if there is no other option.
+> :warning: **WARNING**:
+> It is a very first version of the project that uses Terraform "remote-exec" provisioner to bootstrap software to the deployed instance.
+> Despite of the fact that it works perfect, using Terraform for instance provisioning is recommended only as a last resort option.
+> Using third-parties provisioner (configuration management systems) gives us more flexibility in configuration and that is what exactly Terraform recommends to do.
+> Please use the latest version of the project (that is using Terraform + Ansible integration) located within the main project directory.
 
 # Eurotunnel
 This simple Terraform script allows you to automatically deploy AWS EC2 instance and provision ready-to-use IPsec VPN along with Telegram MTProto proxy.  
