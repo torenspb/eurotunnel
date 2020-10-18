@@ -84,7 +84,6 @@ resource "aws_instance" "eurotunnel" {
   }
 
   provisioner "local-exec" {
-    # command = "sudo ansible-playbook -u ${var.connections["username"]} -i '${self.public_ip}:${var.connections["ssh_port"]},' --private-key ${aws_key_pair.bootkey.key_name} --ssh-common-args='-o StrictHostKeyChecking=no' --extra-vars '@variables.json' provision.yml"
     command = <<EOT
       sudo ansible-playbook -u ${var.connections["username"]} -i '${self.public_ip}:${var.connections["ssh_port"]},' \
       --private-key ${aws_key_pair.bootkey.key_name} --ssh-common-args='-o StrictHostKeyChecking=no' --extra-vars '@variables.json' provision.yml
