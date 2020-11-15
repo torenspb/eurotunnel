@@ -4,6 +4,12 @@ variable "instance" {}
 variable "connections" {}
 variable "route53" {}
 variable "provisioner" {}
+variable "FILE" {
+  default = "variables.json"
+}
+variable "PROVISION" {
+  default = 1
+}
 
 provider "aws" {
   region     = "${var.instance["region"]}"
@@ -85,9 +91,13 @@ resource "aws_instance" "eurotunnel" {
 
   provisioner "local-exec" {
     command = <<EOT
-      sudo ansible-playbook -u ${var.connections["username"]} -i '${self.public_ip}:${var.connections["ssh_port"]},' \
-      --private-key ${aws_key_pair.bootkey.key_name} --ssh-common-args='-o StrictHostKeyChecking=no' --extra-vars '@variables.json' provision.yml
-    EOT
+if [ ${var.PROVISION} -eq 1 ]; then
+    ansible-playbook -u ${var.connections["username"]} -i '${self.public_ip}:${var.connections["ssh_port"]},' \
+     --private-key ${aws_key_pair.bootkey.key_name} --ssh-common-args='-o StrictHostKeyChecking=no' --extra-vars '@${var.FILE}' provision.yml
+else
+    logger "provision is not required"
+fi
+EOT
   }
 }
 

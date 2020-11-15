@@ -7,7 +7,8 @@ yes | ssh-keygen -f centoskey -N '' -C ''
 echo '=============================================================='
 echo 'Applying terraform configuration'
 echo '-----------------------------------'
-terraform apply -var-file="variables.json"
+export TF_VAR_FILE="variables.json"
+terraform apply -var-file="$TF_VAR_FILE"
 echo '=============================================================='
 echo 'Done!'
 echo '=============================================================='
