@@ -43,8 +43,8 @@
     - name:  template everything for fooserv
       template: src={{item.src}} dest={{item.dest}}
       with_items:
-          - { src: 'resources/cronjob', dest: 'cronjob' }
-          - { src: 'resources/swanctl.conf', dest: '/etc/strongswan/swanctl/swanctl.conf' }
+          - { src: '../resources/cronjob', dest: 'cronjob' }
+          - { src: '../resources/swanctl.conf', dest: '/etc/strongswan/swanctl/swanctl.conf' }
 
     - name: Apply CRON job
       shell: crontab cronjob
