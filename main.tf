@@ -1,5 +1,3 @@
-variable "AWS_ACCESS_KEY" {}
-variable "AWS_SECRET_KEY" {}
 variable "instance" {}
 variable "connections" {}
 variable "route53" {}
@@ -13,8 +11,6 @@ variable "PROVISION" {
 
 provider "aws" {
   region     = "${var.instance["region"]}"
-  access_key = "${var.AWS_ACCESS_KEY}"
-  secret_key = "${var.AWS_SECRET_KEY}"
 }
 
 resource "aws_security_group" "base_sg" {

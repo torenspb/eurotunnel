@@ -25,11 +25,10 @@ Variables are splitted into several sections and need to be changed by your valu
   - ipsec - `user` and `shared_key` are credentials for remote access VPN, `psk` is also needed for connection establishing
   - telegram - set `secret` that will be specified within your Telegram configuration
 Leave the `route53` section with defaults if you don't have a domain parked on AWS or don't want to bind a domain to the created instance. Otherwise, set `enabled` option to `true` and specify your domain and AWS route53 zone id (should be created manually before).  
-Also, `terraform.tvfars` file should contain your `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` keys:
+Also, environment variables containing AWS access and secret keys should be created:
 ```
-$ cat terraform.tfvars
-AWS_ACCESS_KEY = "qwerty"
-AWS_SECRET_KEY = "qwerty"
+export AWS_ACCESS_KEY="qwerty"
+export AWS_SECRET_KEY="qwerty"
 ```
 ### Deployment
 Simply run `./pipeline.sh` file and type `yes` when terraform asks about deploy.  
