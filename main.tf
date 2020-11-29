@@ -88,8 +88,8 @@ resource "aws_instance" "eurotunnel" {
   provisioner "local-exec" {
     command = <<EOT
 if [ ${var.PROVISION} -eq 1 ]; then
-    ansible-playbook -u ${var.connections["username"]} -i '${self.public_ip}:${var.connections["ssh_port"]},' \
-     --private-key ${aws_key_pair.bootkey.key_name} --ssh-common-args='-o StrictHostKeyChecking=no' --extra-vars '@${var.FILE}' ansible/provision.yml
+    ansible-playbook -i '${self.public_ip}:${var.connections["ssh_port"]},' \
+    --ssh-common-args='-o StrictHostKeyChecking=no' --extra-vars '@${var.FILE}' ansible/provision.yml
 else
     logger "provision is not required"
 fi
