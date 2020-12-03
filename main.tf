@@ -112,3 +112,6 @@ resource "aws_route53_record" "address-record" {
 output "public_ip" {
   value = "${aws_instance.eurotunnel.public_ip}"
 }
+output "ssh_port" {
+  value = "${var.connections["ssh_port"]}"
+}
