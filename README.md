@@ -72,3 +72,6 @@ Done!
 ==============================================================
 ```
 You can use specified domain name or a public IP of the deployed instance as a VPN server destination and Telegram proxy server address.  
+
+### Using with Jenkins
+There is a Jenkinsfile under the `jenkins-pipeline` folder. It can be used for the infrastructure deployment and provisioning.
