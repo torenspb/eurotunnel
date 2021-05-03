@@ -24,10 +24,7 @@ pipeline {
                 sh "cp ${params.LOCAL_VARS_DIR}/${env.TF_VAR_FILE} ."
                 sh "terraform init"
                 sh "terraform plan -var-file=\"${env.TF_VAR_FILE}\""
-                timeout(5) {
-                    input(id: "Deploy", message: "Procced with deploy?", ok: 'Yes')
-                }
-            }
+           }
         }
         stage('Deploy environment') {
             steps {
